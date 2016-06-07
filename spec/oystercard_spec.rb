@@ -21,11 +21,8 @@ describe Oystercard do
 	it 'raises an error if the maximum balance is exceeded' do  
 		maximum_balance = Oystercard::MAXIMUM_BALANCE
 		subject.top_up(maximum_balance)   #set balance to be at maximum so when 1 is added, in test below, it exceeds maximum and will raise error
-		expect{ subject.top_up(1)}.to raise_error 'Maximum balance of #{maximum_balance} exceeded'
+		expect{subject.top_up(1)}.to raise_error 'Maximum balance of #{maximum_balance} exceeded'
 	end
-
-
-		describe '#top up' do  
 		
 		# User Story 2
 		##############
@@ -33,32 +30,57 @@ describe Oystercard do
 		# As a customer
 		# I want to add money to my card
 
-			it 'responds to #top up' do
-			# it {is_expected.to respond_to(:top_up).with(1).argument}
-			 	expect {subject.to respond_to(:top_up).with(1).argument}
+			describe '#top up' do  
+
+				it {is_expected.to respond_to(:top_up).with(1).argument}
+
+				it 'can increase the balance' do  
+					expect {subject.top_up(1)}.to change{ subject.balance}.by(1)
+				end
+
 			end
 
-			it 'can increase the balance' do  
-				expect { subject.top_up(1)}.to change{ subject.balance }.by(1)
+			# User Story 4
+			##############
+			# In order to pay for my journey
+			# As a customer
+			# I need my fare deducted from my card
+
+			describe '#deduct' do  
+
+				it {is_expected.to respond_to(:deduct).with(1).argument}
+
+				it 'can decrease the balance' do  
+					subject.top_up(20)  # default balance = 0 so need to add an amount so the amount to be deducted can be tested
+					expect {subject.deduct(3)}.to change{ subject.balance}.by(-3)
+				end
 			end
 
-		end
+	# User Story 4
+	##############
+	# In order to get through the barriers.
+	# As a customer
+	# I need to touch in and out.
 
-		describe '#deduct' do  
+	it {is_expected.to respond_to(:touch_in)}
 
-		# User Story 4
-		##############
-		# In order to pay for my journey
-		# As a customer
-		# I need my fare deducted from my card
-
-			it 'responds to #deduct' do  
-				expect {subject.to respond_to(:deduct).with(1).argument}
-			end
-
-			it 'can decrease the balance' do  
-				subject.top_up(20)  # default balance = 0 so need to add an amount so the amount to be deducted can be tested
-				expect { subject.deduct(3)}.to change{ subject.balance }.by(-3)
-			end
+	it 'can touch in' do  
+		subject.touch_in
+		expect(subject).to be_in_journey
 	end
+
+	it {is_expected.to respond_to(:touch_out)}
+
+	it 'can touch out' do
+		subject.touch_in
+		subject.touch_out
+		expect(subject).not_to be_in_journey
+	end
+
+	it {is_expected.to respond_to(:in_journey?)}
+
+	it 'is initially not in a journey' do  
+		expect(subject.in_journey?).to eq false
+	end
+		
 end
