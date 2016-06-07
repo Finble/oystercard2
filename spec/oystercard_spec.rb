@@ -52,11 +52,11 @@ describe Oystercard do
 
 				it 'can decrease the balance' do  
 					subject.top_up(20)  # default balance = 0 so need to add an amount so the amount to be deducted can be tested
-					expect {subject.deduct(3)}.to change{ subject.balance}.by(-3)
+					expect{subject.deduct(3)}.to change{ subject.balance}.by(-3)
 				end
 			end
 
-	# User Story 4
+	# User Story 5
 	##############
 	# In order to get through the barriers.
 	# As a customer
@@ -82,5 +82,16 @@ describe Oystercard do
 	it 'is initially not in a journey' do  
 		expect(subject.in_journey?).to eq false
 	end
-		
+
+						# User Story 6
+						##############
+						# In order to pay for my journey
+						# As a customer
+						# I need to have the minimum amount (£1) for a single journey.
+
+						# it 'cannot touch in if below the minimum balance' do  
+						# 	subject.top_up(0)
+						# 	expect{subject.touch_in}.to raise_error 'Insufficient balance to touch in'
+						# end
+
 end

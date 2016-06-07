@@ -1,6 +1,7 @@
 class Oystercard
 
 	MAXIMUM_BALANCE = 90
+	MINIMUM_BALANCE = 1
 
 	attr_reader :balance, :touch
 
@@ -19,6 +20,7 @@ class Oystercard
 	end
 
 	def touch_in
+		# fail 'Insufficient balance to touch in' if min?
 		@touch = true
 	end
 
@@ -29,5 +31,12 @@ class Oystercard
 	def in_journey?
 		@touch
 	end
+
+	private
+
+	# def min?
+	# 	@balance < MINIMUM_BALANCE
+	# end
+
 
 end
