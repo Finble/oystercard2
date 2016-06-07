@@ -31,4 +31,16 @@ describe Oystercard do
 
 	end
 
+# User Story 2
+##############
+# In order to protect my money from theft or loss
+# As a customer
+# I want a maximum limit (of £90) on my card
+
+	it 'raises an error if the maximum balance is exceeded' do  
+		maximum_balance = Oystercard::MAXIMUM_BALANCE
+		subject.top_up(maximum_balance)   #set balance to be at maximum so when 1 is added, in test below, it exceeds maximum and will raise error
+		expect{ subject.top_up(1)}.to raise_error 'Maximum balance of #{maximum_balance} exceeded'
+	end
+
 end
