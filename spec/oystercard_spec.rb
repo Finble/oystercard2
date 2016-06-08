@@ -4,18 +4,22 @@ describe Oystercard do
 
 # User Story 1
 ##############
-# In order to use public transport
-# As a customer
 # I want money on my card
 
 	it 'has initial balance' do 
-		expect(subject.balance).to eq(0)
+		expect(subject.balance).to eq(0) #starting balance of 0
+	end
+
+# User Story 6
+##############
+# I need to have the minimum amount (£1) for a single journey.
+
+	it 'cannot touch in if card is below the minimum balance' do  
+		expect{subject.touch_in}.to raise_error 'Insufficient balance to touch in'
 	end
 
 # User Story 3
 ##############
-# In order to protect my money from theft or loss
-# As a customer
 # I want a maximum limit (of £90) on my card
 
 	it 'raises an error if the maximum balance is exceeded' do  
@@ -26,8 +30,6 @@ describe Oystercard do
 		
 		# User Story 2
 		##############
-		# In order to keep using public transport
-		# As a customer
 		# I want to add money to my card
 
 			describe '#top up' do  
@@ -42,8 +44,6 @@ describe Oystercard do
 
 			# User Story 4
 			##############
-			# In order to pay for my journey
-			# As a customer
 			# I need my fare deducted from my card
 
 			describe '#deduct' do  
@@ -58,13 +58,12 @@ describe Oystercard do
 
 	# User Story 5
 	##############
-	# In order to get through the barriers.
-	# As a customer
 	# I need to touch in and out.
 
 	it {is_expected.to respond_to(:touch_in)}
 
-	it 'can touch in' do  
+	it 'can touch in' do 
+		subject.top_up(10) # new test (user story 6) defaults balance to < 1 so cannot touch in, so need to top up card to run this test
 		subject.touch_in
 		expect(subject).to be_in_journey
 	end
@@ -72,6 +71,7 @@ describe Oystercard do
 	it {is_expected.to respond_to(:touch_out)}
 
 	it 'can touch out' do
+		subject.top_up(10) # new test (user story 6) defaults balance to < 1 so cannot touch in, so need to top up card to run this test
 		subject.touch_in
 		subject.touch_out
 		expect(subject).not_to be_in_journey
@@ -82,16 +82,5 @@ describe Oystercard do
 	it 'is initially not in a journey' do  
 		expect(subject.in_journey?).to eq false
 	end
-
-						# User Story 6
-						##############
-						# In order to pay for my journey
-						# As a customer
-						# I need to have the minimum amount (£1) for a single journey.
-
-						# it 'cannot touch in if below the minimum balance' do  
-						# 	subject.top_up(0)
-						# 	expect{subject.touch_in}.to raise_error 'Insufficient balance to touch in'
-						# end
 
 end
