@@ -44,17 +44,17 @@ describe Oystercard do
 
 			# User Story 4
 			##############
-			# I need my fare deducted from my card
+			# I need my fare deducted from my card - TEST DELETED AS METHOD MOVED TO PRIVATE (don't need to test for private methods as implicit with tests on methods that rely on it)
 
-			describe '#deduct' do  
+			# describe '#deduct' do  
 
-				it {is_expected.to respond_to(:deduct).with(1).argument}
+			# 	it {is_expected.to respond_to(:deduct).with(1).argument}
 
-				it 'can decrease the balance' do  
-					subject.top_up(20)  # default balance = 0 so need to add an amount so the amount to be deducted can be tested
-					expect{subject.deduct(3)}.to change{ subject.balance}.by(-3)
-				end
-			end
+			# 	it 'can decrease the balance' do  
+			# 		subject.top_up(20)  # default balance = 0 so need to add an amount so the amount to be deducted can be tested
+			# 		expect{subject.deduct(3)}.to change{ subject.balance}.by(-3)
+			# 	end
+			# end
 
 	# User Story 5
 	##############
@@ -81,6 +81,16 @@ describe Oystercard do
 
 	it 'is initially not in a journey' do  
 		expect(subject.in_journey?).to eq false
+	end
+
+	# User Story 7
+	##############
+	# I need the correct amount deducted from my card
+
+	it 'can charge card with amount for journey' do  
+		subject.top_up(20) # to counter the min balance of less than 1 default value
+		subject.touch_in
+		expect{subject.touch_out}.to change {subject.balance}.by(-Oystercard::MINIMUM_BALANCE)
 	end
 
 end
